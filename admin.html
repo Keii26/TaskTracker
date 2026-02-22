@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Team - TaskTracker</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* CSS Tambahan khusus halaman Admin agar lebih rapi */
+        .admin-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .admin-card {
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 30px;
+            text-align: center;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(255,255,255,0.03);
+        }
+
+        .avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            object-fit: cover;
+            border: 3px solid var(--accent);
+            padding: 5px;
+            display: block;
+        }
+
+        .admin-name {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: var(--text-main);
+            display: block;
+            margin-bottom: 5px;
+            text-decoration: none;
+        }
+
+        .admin-role {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .status-badge {
+            font-size: 0.7rem;
+            font-weight: 900;
+            padding: 5px 15px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            display: inline-block;
+        }
+
+        /* Status Colors */
+        .status-active { background: rgba(34, 197, 94, 0.1); color: var(--green); }
+        .status-inactive { background: rgba(239, 68, 68, 0.1); color: var(--red); }
+        
+        .glow-active { box-shadow: 0 10px 30px -10px rgba(34, 197, 94, 0.5); border: 1px solid rgba(34, 197, 94, 0.3); }
+        .glow-inactive { box-shadow: 0 10px 30px -10px rgba(239, 68, 68, 0.5); border: 1px solid rgba(239, 68, 68, 0.3); }
+    </style>
+</head>
+<body>
+
+<header class="top-navbar">
+    <h2 class="logo-top">TaskTracker</h2>
+</header>
+
+<main class="main-container">
+    <h1 class="main-title">Admin Team</h1>
+    <div id="admin-list" class="admin-grid">
+        </div>
+</main>
+
+<script>
+async function fetchAdmins() {
+    try {
+        const response = await fetch('/api/admins');
+        if (!response.ok) throw new Error('Gagal ambil data');
+        const admins = await response.json();
+        
+        const container = document.getElementById('admin-list');
+        container.innerHTML = admins.map(admin => {
+            const isAtv = admin.status === "active";
+            // Link default kalau foto tidak ada
+            const photoUrl = admin.foto || `https://ui-avatars.com/api/?name=${admin.nama}&background=random`;
+            
+            return `
+                <div class="admin-card ${isAtv ? 'glow-active' : 'glow-inactive'}">
+                    <img src="${photoUrl}" class="avatar" alt="${admin.nama}">
+                    <a href="${admin.kontak || '#'}" target="_blank" class="admin-name">${admin.nama}</a>
+                    <span class="admin-role">${admin.jabatan}</span>
+                    <div class="status-badge ${isAtv ? 'status-active' : 'status-inactive'}">
+                        ${isAtv ? '🟢 Active Now' : '🔴 Inactive / Off'}
+                    </div>
+                </div>
+            `;
+        }).join('');
+    } catch (err) {
+        console.error("Error:", err);
+    }
+}
+
+// Update tiap 5 detik biar sinkron sama Bot WA
+setInterval(fetchAdmins, 5000); 
+fetchAdmins(); // Jalankan sekali pas buka
+</script>
+
+</body>
+</html>

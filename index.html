@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskTracker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="top-navbar">
+    <h2 class="logo-top">TaskTracker</h2>
+    <div class="menu-toggle" id="mobile-menu">
+        <span></span>
+        <span></span>
+        <span></span>
+    </div>
+</header>
+
+<nav class="sidebar" id="sidebar">
+    <div class="nav-content">
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="admin.html">Admin</a></li>
+            <li><a href="https://forms.gle/pAHn4bbwgfe3Y7z87">Add Task</a></li>
+        </ul>
+    </div>
+    <div class="mini-footer"><p>itu deh</p></div>
+</nav>
+
+    <main class="main-container">
+        <header>
+            <h1 class="main-title">Tasks List</h1>
+        </header>
+
+        <section class="stats-container">
+            <div class="stat-card urgent">
+                <div class="stat-info">
+                    <span class="stat-label">Nearest Deadline</span>
+                    <span id="nearest-deadline" class="stat-value">-- / --</span>
+                </div>
+            </div>
+            <div class="stat-card pending">
+                <div class="stat-info">
+                    <span class="stat-label">All Tasks</span>
+                    <span id="task-count" class="stat-value">0</span>
+                </div>
+            </div>
+        </section>
+
+        <div id="task-list" class="task-grid">
+            </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
